@@ -111,15 +111,12 @@ app.use(async (ctx) => {
       }
       const filePath = path.join(dirPath, name);
       const stat = await fs.stat(filePath);
-      let des = "";
-      const desPath = path.join(dirPath, "." + name + ".des");
-      if (
-        await fs.access(dirPath, fs.constants.F_OK).then(
-          () => true,
-          () => false
-        )
-      ) {
+      let des;
+      try {
+        const desPath = path.join(dirPath, "." + name + ".des");
         des = await fs.readFile(desPath, "utf-8");
+      } catch {
+        des = "";
       }
 
       files.push({ name, stat, des });
