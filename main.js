@@ -62,7 +62,7 @@ const renderHtml = (url, files) => {
       } else {
         str += `<td>${getSize(file.stat.size)}</td>`;
       }
-      str += `<td>${file.des || ""}</td>`;
+      str += `<td>${file.des || "-"}</td>`;
       str += `</tr>`;
       return str;
     })
