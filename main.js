@@ -80,8 +80,8 @@ ${bodyStr}
 </body>
 </html>`;
 };
-
-app.use(KoaStatic(path.join(__dirname, 'static')));
+const staticPath = path.join(__dirname, 'static')
+app.use(KoaStatic(staticPath));
 
 app.use(async (ctx) => {
     if (ctx.status != 404) {
@@ -90,8 +90,11 @@ app.use(async (ctx) => {
     if (!ctx.url.endsWith('/')) {
         return;
     }
+    const dirPath = path.join(staticPath, ctx.url);
+    if(!dirPath.startsWith(staticPath)) {
+        return
+    }
     try {
-        const dirPath = path.join(__dirname, 'static', ctx.url);
         await fs.access(dirPath, fs.constants.F_OK);
         const dirStat = await fs.stat(dirPath);
         if (!dirStat.isDirectory()) {
