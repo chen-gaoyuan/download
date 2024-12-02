@@ -103,6 +103,9 @@ app.use(async (ctx) => {
         const names = await fs.readdir(dirPath);
         const files = [];
         for (const name of names) {
+            if(name.startsWith('.')) {
+                continue
+            }
             const stat = await fs.stat(path.join(dirPath, name));
             files.push({ name, stat });
         }
