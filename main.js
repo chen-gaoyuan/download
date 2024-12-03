@@ -84,7 +84,7 @@ ${bodyStr}
 </html>`;
 };
 const staticPath = path.join(__dirname, "static");
-app.use(KoaStatic(staticPath));
+app.use(KoaStatic(staticPath, { hidden: true }));
 
 app.use(async (ctx) => {
   if (ctx.status != 404) {
