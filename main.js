@@ -51,7 +51,7 @@ const renderHtml = (url, files) => {
         str += `<td><a href="${"./" + file.name}">${file.name}</a></td>`;
       }
       const d = file.stat.mtime;
-      str += `<td>${d.getFullYear() + 1}-${d.getMonth() + 1}-${formatTimeNum(
+      str += `<td>${d.getFullYear()}-${d.getMonth() + 1}-${formatTimeNum(
         d.getDay()
       )} ${formatTimeNum(d.getHours())}:${formatTimeNum(
         d.getMinutes()
