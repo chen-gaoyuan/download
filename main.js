@@ -87,6 +87,7 @@ ${bodyStr}
 };
 const staticPath = path.join(__dirname, "static");
 if (process.env.COUNTER == "1") {
+  const countQueues = {};
   app.use(async (ctx, next) => {
     await next();
     if (ctx.url.endsWith("/")) {
@@ -102,14 +103,35 @@ if (process.env.COUNTER == "1") {
     }
     const dirPath = path.dirname(filePath);
     const countFilePath = path.join(dirPath, ".cnt." + fileName);
-    let count;
-    try {
-      count = parseInt(await fs.readFile(countFilePath, "utf-8"));
-    } catch {
-      count = 0;
+
+    // 排队
+    if (!countQueues[countFilePath]) {
+      countQueues[countFilePath] = [];
     }
-    count++;
-    await fs.writeFile(countFilePath, count.toString());
+    await new Promise((resolve) => {
+      countQueues[countFilePath].push(resolve);
+      if (countQueues[countFilePath].length == 1) {
+        resolve();
+      }
+    });
+    try {
+      let count;
+      try {
+        count = parseInt(await fs.readFile(countFilePath, "utf-8"));
+      } catch {
+        count = 0;
+      }
+      count++;
+      await fs.writeFile(countFilePath, count.toString());
+    } finally {
+      countQueues[countFilePath].shift();
+      if (countQueues[countFilePath].length > 0) {
+        countQueues[countFilePath][0]();
+      }
+      if (countQueues[countFilePath].length == 0) {
+        delete countQueues[countFilePath];
+      }
+    }
   });
 }
 
