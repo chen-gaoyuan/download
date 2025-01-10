@@ -64,7 +64,7 @@ const renderHtml = (url, files) => {
         str += `<td>${getSize(file.stat.size)}</td>`;
       }
       if (process.env.COUNTER == "1") {
-        str += `<td>${file.count}</td>`;
+        str += `<td>${file.stat.isFile() ? file.count : "-"}</td>`;
       }
       if (process.env.DESCRIPTION == "1") {
         str += `<td>${file.des || "-"}</td>`;
@@ -141,7 +141,7 @@ app.use(async (ctx) => {
       const filePath = path.join(dirPath, name);
       const stat = await fs.stat(filePath);
       let count = 0;
-      if (process.env.COUNTER == "1") {
+      if (process.env.COUNTER == "1" && stat.isFile()) {
         try {
           const countPath = path.join(dirPath, ".cnt." + name);
           count = parseInt(await fs.readFile(countPath, "utf-8"));
