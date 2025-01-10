@@ -1,15 +1,16 @@
 {
-    "name": "download",
-    "version": "1.0.0",
-    "main": "main.js",
-    "scripts": {
-      "test": "echo \"Error: no test specified\" && exit 1"
-    },
-    "author": "",
-    "license": "ISC",
-    "description": "",
-    "dependencies": {
-      "koa": "^2.15.3",
-      "koa-static": "^5.0.0"
-    }
+  "name": "download",
+  "version": "1.0.0",
+  "main": "main.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "",
+  "license": "ISC",
+  "description": "",
+  "dependencies": {
+    "dotenv": "^16.4.7",
+    "koa": "^2.15.3",
+    "koa-static": "^5.0.0"
   }
+}
