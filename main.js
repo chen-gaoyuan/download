@@ -96,7 +96,8 @@ if (process.env.COUNTER == "1") {
     if (ctx.status != 200) {
       return;
     }
-    const filePath = path.join(staticPath, ctx.url);
+    const url = decodeURIComponent(ctx.url)
+    const filePath = path.join(staticPath, url);
     const fileName = path.basename(filePath);
     if (fileName.startsWith(".")) {
       return;
@@ -144,7 +145,8 @@ app.use(async (ctx) => {
   if (!ctx.url.endsWith("/")) {
     return;
   }
-  const dirPath = path.join(staticPath, ctx.url);
+  const url = decodeURIComponent(ctx.url)
+  const dirPath = path.join(staticPath, url);
   if (!dirPath.startsWith(staticPath)) {
     return;
   }
@@ -180,7 +182,7 @@ app.use(async (ctx) => {
     }
     files.sort(sortFiles);
     ctx.type = "text/html";
-    ctx.body = renderHtml(ctx.url, files);
+    ctx.body = renderHtml(url, files);
   } catch (err) {
     ctx.throw(500, err);
   }
